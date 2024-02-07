@@ -20,10 +20,9 @@ jobs:
 
       - name: Install dependencies
         run: npm install
+      
       - name: Fetch main branch
         run: git fetch origin main:main
-      
-      - name: Install dependencies
-        run: npm install
+
       - name: Run Test
         run: echo "Hello, world"
