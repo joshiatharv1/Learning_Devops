@@ -24,5 +24,8 @@ jobs:
       - name: Fetch main branch
         run: git fetch origin main:main
 
+      - name: Rebase feature branch onto main
+        run: git rebase main
+
       - name: Run Test
         run: echo "Hello, world"
