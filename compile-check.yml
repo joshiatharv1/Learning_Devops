@@ -31,4 +31,3 @@ jobs:
       run: npm install
     - name: Run Test
       run: echo "Hello, world"
-#       uses: actions/checkout@v2
