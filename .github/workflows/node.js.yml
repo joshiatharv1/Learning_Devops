@@ -23,4 +23,6 @@ jobs:
 
       - name: Echo hello world
         run: echo "hello world"
-
+        
+      - name: Intentionally fail the workflow
+        run: exit 1
