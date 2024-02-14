@@ -125,6 +125,12 @@ const getUserDetails = async (req, res) => {
 
 const updateUserDetails = async (req, res) => {
   try {
+      // Check if the request body is empty
+      if (Object.keys(req.body).length === 0) {
+          console.log('Request body must not be empty');
+          return res.status(400).json({ message: 'Request body must not be empty' });
+      }
+
       // Get the user from the request
       const user = req.user;
 
@@ -135,21 +141,20 @@ const updateUserDetails = async (req, res) => {
       }
 
       // Extract updated details from the request body
-      const { first_name, last_name, username, password } = req.body;
+      const { first_name, last_name, password } = req.body;
 
       // Validate that only allowed fields are being updated
-      const allowedFields = ['first_name', 'last_name', 'username', 'password'];
-      const isUpdateValid = Object.keys(req.body).every(field => allowedFields.includes(field));
+      const allowedFields = ['first_name', 'last_name', 'password'];
+      const invalidFields = Object.keys(req.body).filter(field => !allowedFields.includes(field));
 
-      if (!isUpdateValid) {
-          console.log('Invalid fields for update:', req.body);
-          return res.status(400).json({ message: 'Invalid fields for update' });
+      if (invalidFields.length > 0) {
+          console.log('Invalid fields for update:', invalidFields);
+          return res.status(400).json({ message: 'Only first name, last name, and password can be updated' });
       }
 
       // Update user details
       user.first_name = first_name || user.first_name;
       user.last_name = last_name || user.last_name;
-      user.username = username || user.username;
 
       // Update the password if provided
       if (password) {
@@ -164,7 +169,7 @@ const updateUserDetails = async (req, res) => {
       await user.save();
 
       // Return success message
-      return res.status(200).json({ message: 'User details updated successfully' });
+      return res.status(204).json({ message: 'User details updated successfully' });
   } catch (error) {
       // If an error occurs, log the error and return an appropriate response
       console.error('Error in updateUserDetails:', error);
@@ -174,6 +179,8 @@ const updateUserDetails = async (req, res) => {
       return res.status(500).json({ error: 'Internal Server Error' });
   }
 };
+
+
 
 
 export default { register, getUserDetails, updateUserDetails};

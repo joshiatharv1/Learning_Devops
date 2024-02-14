@@ -1,8 +1,10 @@
+import { config as configDotenv } from "dotenv";
+configDotenv();
 const dbConfig = {
-    HOST: 'localhost',
-    USER: 'root',
-    PASSWORD: 'root',
-    DB: 'test',
+    HOST: process.env.DB_HOST,
+    USER: process.env.DB_USER,
+    PASSWORD: process.env.DB_PASS,
+    DB: process.env.MYSQL_DB,
     dialect: 'mysql',
   
     pool: {
