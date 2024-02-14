@@ -1,0 +1,49 @@
+name: Node.js CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: 16
+        
+    - name: Install MySQL
+      run: sudo apt-get update && sudo apt-get install -y mysql-server
+
+    - name: Start MySQL service
+      run: sudo systemctl start mysql
+
+    - name: Create MySQL database and user
+      run: |
+        mysql -u root -e "CREATE DATABASE IF NOT EXISTS my_database;"
+        mysql -u root -e "CREATE USER IF NOT EXISTS 'root'@'localhost' IDENTIFIED BY 'root';"
+
+    - name: Populate .env file with MySQL connection details
+      run: |
+        echo "DB_HOST=localhost" >> .env
+        echo "DB_USER=root" >> .env
+        echo "DB_PASSWORD=root" >> .env
+        echo "DB_DATABASE=test" >> .env
+
+    - name: Display .env file
+      run: cat .env
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Run tests
+      run: npm test

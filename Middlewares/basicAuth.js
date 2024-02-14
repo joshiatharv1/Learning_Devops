@@ -6,7 +6,9 @@ const { User } = db;
 const basicAuthMiddleware = async (req, res, next) => {
     try {
         const authHeader = req.headers['authorization'];
-
+        if (req.path === '/v1/user/self' && req.method === 'POST') {
+            return next();
+        }
         if (!authHeader) {
             console.log('Authorization header missing');
             return res.status(401).json({ message: 'Authorization header missing' });

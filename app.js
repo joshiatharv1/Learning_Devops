@@ -8,13 +8,20 @@ configDotenv();
 const app = express();
 app.use(express.json());
 
-// app.use('/v1/user', restrictMethods); 
+
 app.use('/v1/user', router); 
 app.use('/healthz', healthrouter); 
 
 app.use(handleRouteErrors); 
 
+app.get('/', (req, res)=>{
+  res.send({
+    message:'working'
+  })
+})
+
 app.listen(process.env.APP_PORT, () => {
-  console.log("Server is up and Running");
+  console.log("Server is up and Running ",process.env.APP_PORT);
 });
 
+export default app;
