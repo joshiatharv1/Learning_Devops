@@ -30,11 +30,11 @@ jobs:
 
     - name: Start MySQL service
       run: sudo systemctl start mysql
-      
+
     - name: Create MySQL database and user
       run: |
-        mysql -u root -p -e "CREATE DATABASE IF NOT EXISTS ${{ secrets.MYSQL_DB }};"
-        mysql -u root -p -e "CREATE USER IF NOT EXISTS '${{ secrets.DB_USER }}'@'localhost' IDENTIFIED BY '${{ secrets.DB_PASS }}';"
+        mysql -u root -p "CREATE DATABASE IF NOT EXISTS ${{ secrets.MYSQL_DB }};"
+        mysql -u root -p "CREATE USER IF NOT EXISTS '${{ secrets.DB_USER }}'@'localhost' IDENTIFIED BY '${{ secrets.DB_PASS }}';"
 
     - name: Install dependencies
       run: npm install
