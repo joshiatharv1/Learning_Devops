@@ -1,5 +1,5 @@
 import request from 'supertest';
-import app from './app.js';
+import app, { closeServer } from './app.js';
 import { Sequelize } from 'sequelize';
 import UserModel from './Models/user.js';
 import dbConfig from './Config/databaseCon.js';
@@ -29,6 +29,7 @@ let sequelize;
     try {
       await sequelize.close();
       console.log('Database connection closed');
+      closeServer();
     } catch (error) {
       console.error('Error closing database connection:', error);
     }
