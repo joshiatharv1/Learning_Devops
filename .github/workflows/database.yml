@@ -9,6 +9,11 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    env:
+      MYSQL_DB: ${{ secrets.MYSQL_DB }}
+      DB_USER: ${{ secrets.DB_USER }}
+      DB_PASS: ${{ secrets.DB_PASS }}
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -40,9 +45,9 @@ jobs:
       # Creating MySQL database
       - name: Create MySQL database
         run: |
-          mysql -u root -e "CREATE DATABASE IF NOT EXISTS ${{ secrets.MYSQL_DB }};"
-          mysql -u root -e "CREATE USER IF NOT EXISTS '${{ secrets.DB_USER }}'@'localhost' IDENTIFIED BY '${{ secrets.DB_PASS }}';"
-          mysql -u root -e "GRANT ALL PRIVILEGES ON ${{ secrets.MYSQL_DB }}.* TO '${{ secrets.DB_USER }}'@'localhost';"
+          mysql -u root -e "CREATE DATABASE IF NOT EXISTS $MYSQL_DB;"
+          mysql -u root -e "CREATE USER IF NOT EXISTS '$DB_USER'@'localhost' IDENTIFIED BY '$DB_PASS';"
+          mysql -u root -e "GRANT ALL PRIVILEGES ON $MYSQL_DB.* TO '$DB_USER'@'localhost';"
           mysql -u root -e "FLUSH PRIVILEGES;"
 
       # Installing dependencies
