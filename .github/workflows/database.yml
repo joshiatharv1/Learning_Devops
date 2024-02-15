@@ -10,41 +10,45 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
-      
-    - name: Setup Node.js
-      uses: actions/setup-node@v2
-      with:
-        node-version: 14
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-    # Displaying .env file and appending secrets
-    - name: Display .env file
-      run: |
-        echo "APP_USER=${{ secrets.APP_USER }}" >> .env
-        echo "DB_PORT=${{ secrets.DB_PORT }}" >> .env
-        echo "DB_HOST=${{ secrets.DB_HOST }}" >> .env
-        echo "DB_USER=${{ secrets.DB_USER }}" >> .env
-        echo "DB_PASS=${{ secrets.DB_PASS }}" >> .env
-        echo "MYSQL_DB=${{ secrets.MYSQL_DB }}" >> .env
-        cat .env
-  
-    # Installing MySQL and starting service
-    - name: Install MySQL
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y mysql-server
-        sudo systemctl start mysql
-        sudo systemctl status mysql
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14
 
-    # Creating MySQL database
-    - name: Create MySQL database
-      run: mysql -u ${{ secrets.DB_USER }} -p"${{ secrets.DB_PASS }}" -e "CREATE DATABASE IF NOT EXISTS ${{ secrets.MYSQL_DB }};"
-  
-    # Installing dependencies
-    - name: Install dependencies
-      run: npm install
+      # Displaying .env file and appending secrets
+      - name: Display .env file
+        run: |
+          echo "APP_USER=${{ secrets.APP_USER }}" >> .env
+          echo "DB_PORT=${{ secrets.DB_PORT }}" >> .env
+          echo "DB_HOST=${{ secrets.DB_HOST }}" >> .env
+          echo "DB_USER=${{ secrets.DB_USER }}" >> .env
+          echo "DB_PASS=${{ secrets.DB_PASS }}" >> .env
+          echo "MYSQL_DB=${{ secrets.MYSQL_DB }}" >> .env
+          cat .env
 
-    # Running tests
-    - name: Run tests
-      run: npm test
+      # Installing MySQL and starting service
+      - name: Install MySQL
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y mysql-server
+          sudo systemctl start mysql
+          sudo systemctl status mysql
+
+      # Creating MySQL database
+      - name: Create MySQL database
+        run: |
+          mysql -u root -e "CREATE DATABASE IF NOT EXISTS ${{ secrets.MYSQL_DB }};"
+          mysql -u root -e "CREATE USER IF NOT EXISTS '${{ secrets.DB_USER }}'@'localhost' IDENTIFIED BY '${{ secrets.DB_PASS }}';"
+          mysql -u root -e "GRANT ALL PRIVILEGES ON ${{ secrets.MYSQL_DB }}.* TO '${{ secrets.DB_USER }}'@'localhost';"
+          mysql -u root -e "FLUSH PRIVILEGES;"
+
+      # Installing dependencies
+      - name: Install dependencies
+        run: npm install
+
+      # Running tests
+      - name: Run tests
+        run: npm test
