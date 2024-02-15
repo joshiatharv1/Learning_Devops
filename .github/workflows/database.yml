@@ -37,6 +37,7 @@ jobs:
         sudo systemctl start mysql
         sudo systemctl status mysql
 
+
     # Creating MySQL database
     - name: Create MySQL database
       run: mysql -u ${{ secrets.DB_USER }} -p"${{ secrets.DB_PASS }}" -e "CREATE DATABASE IF NOT EXISTS ${{ secrets.MYSQL_DB }};"
