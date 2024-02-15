@@ -9,44 +9,51 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    env:
+      MYSQL_DB: ${{ secrets.MYSQL_DB }}
+      DB_USER: ${{ secrets.DB_USER }}
+      DB_PASS: ${{ secrets.DB_PASS }}
+
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
-      
-    - name: Setup Node.js
-      uses: actions/setup-node@v2
-      with:
-        node-version: 14
-        
-    - name: Install MySQL
-      run: sudo apt-get update && sudo apt-get install -y mysql-server
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-    - name: Start MySQL service
-      run: sudo systemctl start mysql
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14
 
-    - name: Create MySQL database and user
-      run: |
-        mysql -u root -e "CREATE DATABASE IF NOT EXISTS ${{ secrets.MYSQL_DB }};"
-        mysql -u root -e "CREATE USER IF NOT EXISTS '${{ secrets.DB_USER }}'@'localhost' IDENTIFIED BY '${{ secrets.DB_PASS }}';"
-        mysql -u root -e "GRANT ALL PRIVILEGES ON ${{ secrets.MYSQL_DB }}.* TO '${{ secrets.DB_USER }}'@'localhost';"
-        mysql -u root -e "FLUSH PRIVILEGES;"
+      # Displaying .env file and appending secrets
+      - name: Display .env file
+        run: |
+          echo "APP_USER=${{ secrets.APP_USER }}" >> .env
+          echo "DB_PORT=${{ secrets.DB_PORT }}" >> .env
+          echo "DB_HOST=${{ secrets.DB_HOST }}" >> .env
+          echo "DB_USER=${{ secrets.DB_USER }}" >> .env
+          echo "DB_PASS=${{ secrets.DB_PASS }}" >> .env
+          echo "MYSQL_DB=${{ secrets.MYSQL_DB }}" >> .env
+          cat .env
 
-    - name: Set up environment variables
-      env:
-        DB_HOST: localhost
-        DB_USER: ${{ secrets.DB_USER }}
-        DB_PASSWORD: ${{ secrets.DB_PASS }}
-        DB_DATABASE: ${{ secrets.MYSQL_DB }}
+      # Installing MySQL and starting service
+      - name: Install MySQL
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y mysql-server
+          sudo systemctl start mysql
+          sudo systemctl status mysql
 
-    - name: Display environment variables
-      run: |
-        echo "DB_HOST=${DB_HOST}"
-        echo "DB_USER=${DB_USER}"
-        echo "DB_PASSWORD=${DB_PASSWORD}"
-        echo "DB_DATABASE=${DB_DATABASE}"
+      # Creating MySQL database
+      - name: Create MySQL database
+        run: |
+          mysql -u root -e "CREATE DATABASE IF NOT EXISTS $MYSQL_DB;"
+          mysql -u root -e "CREATE USER IF NOT EXISTS '$DB_USER'@'localhost' IDENTIFIED BY '$DB_PASS';"
+          mysql -u root -e "GRANT ALL PRIVILEGES ON $MYSQL_DB.* TO '$DB_USER'@'localhost';"
+          mysql -u root -e "FLUSH PRIVILEGES;"
 
-    - name: Install dependencies
-      run: npm install
+      # Installing dependencies
+      - name: Install dependencies
+        run: npm install
 
-    - name: Run tests
-      run: npm test
+      # Running tests
+      - name: Run tests
+        run: npm test

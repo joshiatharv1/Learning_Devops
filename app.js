@@ -20,8 +20,12 @@ app.get('/', (req, res)=>{
   })
 })
 
-app.listen(process.env.APP_PORT, () => {
-  console.log("Server is up and Running ",process.env.APP_PORT);
+const server = app.listen(process.env.APP_PORT, () => {
+  console.log("Server is up and Running ", process.env.APP_PORT);
 });
+
+export const closeServer = () => {
+  server.close();
+};
 
 export default app;
