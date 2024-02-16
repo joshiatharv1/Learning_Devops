@@ -40,7 +40,7 @@ jobs:
 
     # Creating MySQL database
     - name: Create MySQL database
-      run: mysql -u ${{ secrets.DB_USER }} -p"${{ secrets.DB_PASS }}" -e "CREATE DATABASE IF NOT EXISTS ${{ secrets.MYSQL_DB }};"
+      run: mysql -u root -p"root" -e "CREATE DATABASE IF NOT EXISTS ${{ secrets.MYSQL_DB }};"
   
     # Installing dependencies
     - name: Install dependencies
