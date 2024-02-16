@@ -9,47 +9,43 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    env:
-      DB_USER: ${{ secrets.DB_USER }}
-      DB_PASS: ${{ secrets.DB_PASS }}
-      MYSQL_DB: ${{ secrets.MYSQL_DB }}
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+    - name: Checkout code
+      uses: actions/checkout@v2
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: 14
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: 14
+    # Displaying .env file and appending secrets
+    - name: Display .env file
+      run: |
+        echo "APP_USER=${{ secrets.APP_USER }}" >> .env
+        echo "DB_PORT=${{ secrets.DB_PORT }}" >> .env
+        echo "DB_HOST=${{ secrets.DB_HOST }}" >> .env
+        echo "DB_USER=${{ secrets.DB_USER }}" >> .env
+        echo "DB_PASS=${{ secrets.DB_PASS }}" >> .env
+        echo "MYSQL_DB=${{ secrets.MYSQL_DB }}" >> .env
+        cat .env
+  
+    # Installing MySQL and starting service
+    - name: Install MySQL
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y mysql-server
+        sudo systemctl start mysql
+        sudo systemctl status mysql
 
-      # Displaying .env file and appending secrets
-      - name: Display .env file
-        run: |
-          echo "APP_USER=${{ secrets.APP_USER }}" >> .env
-          echo "DB_PORT=${{ secrets.DB_PORT }}" >> .env
-          echo "DB_HOST=${{ secrets.DB_HOST }}" >> .env
-          echo "DB_USER=${{ secrets.DB_USER }}" >> .env
-          echo "DB_PASS=${{ secrets.DB_PASS }}" >> .env
-          echo "MYSQL_DB=${{ secrets.MYSQL_DB }}" >> .env
-          cat .env
 
-      # Installing MySQL and starting service
-      - name: Install MySQL
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y mysql-server
-          sudo systemctl start mysql
-          sudo systemctl status mysql
+    # Creating MySQL database
+    - name: Create MySQL database
+      run: mysql -u ${{ secrets.DB_USER }} -p"${{ secrets.DB_PASS }}" -e "CREATE DATABASE IF NOT EXISTS ${{ secrets.MYSQL_DB }};"
+  
+    # Installing dependencies
+    - name: Install dependencies
+      run: npm install
 
-      # Creating MySQL database using environment variables
-      - name: Create MySQL database
-        run: mysql -e "CREATE DATABASE IF NOT EXISTS $MYSQL_DB;"
-
-      # Installing dependencies
-      - name: Install dependencies
-        run: npm install
-
-      # Running tests
-      - name: Run tests
-        run: npm test
+    # Running tests
+    - name: Run tests
+      run: npm test
