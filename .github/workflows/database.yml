@@ -44,7 +44,7 @@ jobs:
 
       # Creating MySQL database using environment variables
       - name: Create MySQL database
-        run:  mysql -u $DB_USER -p'$DB_PASS' -e "CREATE DATABASE IF NOT EXISTS $MYSQL_DB;"
+        run: mysql -e "CREATE DATABASE IF NOT EXISTS $MYSQL_DB;"
 
       # Installing dependencies
       - name: Install dependencies
