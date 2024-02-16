@@ -42,6 +42,12 @@ jobs:
           sudo systemctl start mysql
           sudo systemctl status mysql
 
+      - name: Debug
+        run: |
+            echo "DB_USER: $DB_USER"
+            echo "DB_PASS: $DB_PASS"
+            echo "MYSQL_DB: $MYSQL_DB"
+        
       # Creating MySQL database using environment variables
       - name: Create MySQL database
         run: mysql -u $DB_USER -p$DB_PASS -e "CREATE DATABASE IF NOT EXISTS $MYSQL_DB;"
