@@ -1,5 +1,5 @@
 #!/bin/bash
-
+"sleep 30"
 # Update package index
 sudo dnf -y update
 
