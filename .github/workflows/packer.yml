@@ -31,6 +31,9 @@ jobs:
             sudo mv packer /usr/local/bin/
         shell: bash
 
+      - name: Change directory to Packer
+        run: cd Packer
+
       - name: Run Packer fmt
         run: |
           packer fmt -check packerconfig.json
