@@ -23,13 +23,17 @@ build {
 
   provisioner "shell" {
     script = "appsetup.sh"
-  },
- provisioner "file" {
+  }
+
+  provisioner "file" {
     source      = "webapp.zip"
     destination = "webapp.zip"
-  },
-    provisioner "shell" {
-    inline = "sudo dnf install -y unzip",
-              "unzip webapp.zip -d webapp"
+  }
+
+  provisioner "shell" {
+    inline = [
+      "sudo dnf install -y unzip",
+      "unzip webapp.zip -d webapp"
+    ]
   }
 }
