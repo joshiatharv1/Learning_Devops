@@ -31,14 +31,18 @@ jobs:
             sudo mv packer /usr/local/bin/
             cd Packer
             echo '${{ secrets.GCP_SA_KEY }}' > credentials.json
-            packer init
+            
         shell: bash
+
+      - name: Run Packer validate
+        run: |
+          cd Packer
+          packer init packerconfig.json.pkr.hcl
 
       - name: Run Packer fmt
         run: |
           cd Packer
           packer fmt -check packerconfig.json.pkr.hcl
-        continue-on-error: true
 
       - name: Run Packer validate
         run: |
