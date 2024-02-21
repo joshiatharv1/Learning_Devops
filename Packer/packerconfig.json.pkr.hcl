@@ -26,14 +26,16 @@ build {
   }
 
   provisioner "file" {
-    source      = "../webapp.zip"
+    source      = "webapp.zip"
     destination = "webapp.zip"
   }
 
   provisioner "shell" {
     inline = [
+
       "sudo dnf install -y unzip",
-      "unzip webapp.zip -d webapp"
+      "unzip webapp.zip -d webapp",
+      "sleep 10"
     ]
   }
 }
