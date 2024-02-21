@@ -16,6 +16,7 @@ jobs:
       - name: Zip Repository
         run: |
           zip -r webapp.zip .
+          mv webapp.zip Packer/
 
 
       - name: Upload Webapp Zip
