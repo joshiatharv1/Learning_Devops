@@ -49,7 +49,7 @@ jobs:
       - name: Run Packer fmt
         run: |
           cd Packer
-          packer fmt -check packerconfig.json.pkr.hcl
+          packer fmt packerconfig.json.pkr.hcl
 
       - name: Run Packer validate
         run: |
