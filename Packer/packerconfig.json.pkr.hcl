@@ -32,7 +32,6 @@ build {
 
   provisioner "shell" {
     inline = [
-      "sleep 30"
       "sudo dnf install -y unzip",
       "unzip webapp.zip -d webapp"
     ]
