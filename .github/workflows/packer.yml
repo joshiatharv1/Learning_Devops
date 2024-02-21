@@ -51,7 +51,7 @@ jobs:
           cd Packer
           packer fmt packerconfig.json.pkr.hcl
 
-      - name: Run Packer validate
+      - name: Run Packer validate run given here
         run: |
           cd Packer
           packer validate packerconfig.json.pkr.hcl
