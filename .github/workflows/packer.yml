@@ -1,0 +1,45 @@
+name: Build Image
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Create Zip Archive
+        run: |
+          zip -r webapp.zip ./
+
+      - name: Set up Google Cloud SDK
+        uses: google-github-actions/setup-gcloud@v0.4.0
+        with:
+          service_account_key: ${{ secrets.GCP_SA_KEY }}
+          project_id: ${{ secrets.Project_Id }}
+
+      - name: Set up Packer
+        run: |
+          sudo yum install -y yum-utils
+          sudo yum-config-manager --add-repo https://rpm.releases.hashicorp.com/RHEL/hashicorp.repo
+          sudo yum -y install packer
+        shell: bash
+
+      - name: Run Packer fmt
+        run: |
+          packer fmt -check packerconfig.json
+        continue-on-error: true
+
+      - name: Run Packer validate
+        run: |
+          packer validate packerconfig.json
+
+      - name: Run Packer build
+        run: |
+          echo '${{ secrets.GCP_SA_KEY }}' > credentials.json
+          packer build packerconfig.json

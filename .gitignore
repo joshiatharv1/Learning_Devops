@@ -131,4 +131,6 @@ dist
 
 node_modules
 
-.evn
+.env
+
+credentials.json
