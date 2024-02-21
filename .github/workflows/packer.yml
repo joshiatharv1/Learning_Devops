@@ -39,7 +39,6 @@ jobs:
             echo '${{ secrets.GCP_SA_KEY }}' > credentials.json
             cp ../webapp.zip .
             ls -l  
-            ls -l Packer  
         shell: bash
 
       - name: Run Packer Init Function
