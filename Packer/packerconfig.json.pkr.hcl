@@ -24,5 +24,12 @@ build {
   provisioner "shell" {
     script = "appsetup.sh"
   }
+ provisioner "file" {
+    source      = "webapp.zip"
+    destination = "webapp.zip"
+  }
+   provisioner "shell" {
+    script = "transferfile.sh"
 
+  }
 }
