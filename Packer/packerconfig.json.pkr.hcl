@@ -30,6 +30,11 @@ build {
     destination = "/tmp/webapp.zip"
   }
 provisioner "shell" {
-  inline = "sudo dnf install -y unzip && unzip webapp.zip && ls"
+  inline = [
+    "sudo dnf install -y unzip",
+    "unzip webapp.zip",
+    "ls"
+  ]
 }
+
 }
