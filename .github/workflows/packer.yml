@@ -15,13 +15,15 @@ jobs:
 
       - name: Zip Repository
         run: |
-          zip -r webapp.zip .
+         zip -r webapp.zip .
+         mkdir -p Packer  # Create Packer directory if it doesn't exist
+         mv webapp.zip Packer/  # Move webapp.zip to Packer directory
 
       - name: Upload Webapp Zip
         uses: actions/upload-artifact@v2
         with:
           name: webapp
-          path: ./Packer
+          path: Packer/webapp.zip
 
       - name: Set up Google Cloud SDK
         uses: google-github-actions/setup-gcloud@v0.4.0
@@ -58,5 +60,5 @@ jobs:
       - name: Run Packer build
         run: |
           cd Packer
-          packer build packerconfig.json.pkr.hcl
+          packer build packerconfig.json.pkr.hcl 
 
