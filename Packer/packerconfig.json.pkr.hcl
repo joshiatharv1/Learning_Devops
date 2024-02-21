@@ -35,7 +35,7 @@ build {
 
       "sudo dnf install -y unzip",
       "unzip webapp.zip -d webapp",
-      "sleep 10"
+      "sleep 30"
     ]
   }
 }
