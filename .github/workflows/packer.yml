@@ -42,7 +42,7 @@ jobs:
             ls -l Packer  
         shell: bash
 
-      - name: Run Packer Init
+      - name: Run Packer Init Function
         run: |
           cd Packer
           packer init packerconfig.json.pkr.hcl
