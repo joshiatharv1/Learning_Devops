@@ -15,17 +15,7 @@ jobs:
 
       - name: Zip Repository
         run: |
-         zip -r webapp.zip .
-         unzip -d temp webapp.zip 
-         cp webapp.zip temp/Packer/  
-         zip -r webapp.zip temp/  
-         rm -rf temp  
-
-      - name: Upload Webapp Zip
-        uses: actions/upload-artifact@v2
-        with:
-          name: webapp
-          path: webapp.zip
+         zip -r webapp.zip ../webapp
 
       - name: Set up Google Cloud SDK
         uses: google-github-actions/setup-gcloud@v0.4.0
