@@ -31,19 +31,19 @@ jobs:
             sudo mv packer /usr/local/bin/
         shell: bash
 
-      - name: Change directory to Packer
-        run: cd Packer
-
       - name: Run Packer fmt
         run: |
+          cd Packer
           packer fmt -check packerconfig.json
         continue-on-error: true
 
       - name: Run Packer validate
         run: |
+          cd Packer
           packer validate packerconfig.json
 
       - name: Run Packer build
         run: |
+          cd Packer
           echo '${{ secrets.GCP_SA_KEY }}' > credentials.json
           packer build packerconfig.json
