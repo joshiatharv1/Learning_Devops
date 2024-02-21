@@ -30,6 +30,6 @@ build {
     destination = "/tmp/webapp.zip"
   }
   provisioner "shell" {
-    script = "appsetup.sh"
+    script = "transferfile.sh"
   }
 }
