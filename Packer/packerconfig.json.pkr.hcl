@@ -26,10 +26,6 @@ build {
   }
  provisioner "file" {
     source      = "webapp.zip"
-    destination = "webapp.zip"
-  }
-   provisioner "shell" {
-    script = "transferfile.sh"
-
+    destination = "/tmp/webapp.zip"
   }
 }

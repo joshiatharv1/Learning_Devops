@@ -41,7 +41,7 @@ jobs:
             
         shell: bash
 
-      - name: Run Packer validate
+      - name: Run Packer Init
         run: |
           cd Packer
           packer init packerconfig.json.pkr.hcl
