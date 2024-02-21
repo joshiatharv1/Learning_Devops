@@ -36,15 +36,15 @@ jobs:
       - name: Run Packer fmt
         run: |
           cd Packer
-          packer fmt -check packerconfig.json
+          packer fmt -check packerconfig.json.pkr.hcl
         continue-on-error: true
 
       - name: Run Packer validate
         run: |
           cd Packer
-          packer validate packerconfig.json
+          packer validate packerconfig.json.pkr.hcl
 
       - name: Run Packer build
         run: |
           cd Packer
-          packer build packerconfig.json
+          packer build packerconfig.json.pkr.hcl
