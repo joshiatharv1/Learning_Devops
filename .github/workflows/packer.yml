@@ -49,7 +49,11 @@ jobs:
           cd Packer
           packer validate packerconfig.json.pkr.hcl
 
-      - name: Run Packer build
+      # - name: Run Packer build
+      #   run: |
+      #     cd Packer
+      #     packer build packerconfig.json.pkr.hcl
+
+      - name: Run Packer build with artifact
         run: |
-          cd Packer
-          packer build packerconfig.json.pkr.hcl
+         packer build -var 'artifact_path=./webapp.zip' packerconfig.json.pkr.hcl
