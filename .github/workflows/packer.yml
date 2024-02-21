@@ -29,6 +29,8 @@ jobs:
             unzip packer_1.7.3_linux_amd64.zip
             chmod +x packer
             sudo mv packer /usr/local/bin/
+            cd Packer
+            echo '${{ secrets.GCP_SA_KEY }}' > credentials.json
         shell: bash
 
       - name: Run Packer fmt
@@ -45,5 +47,4 @@ jobs:
       - name: Run Packer build
         run: |
           cd Packer
-          echo '${{ secrets.GCP_SA_KEY }}' > credentials.json
           packer build packerconfig.json
