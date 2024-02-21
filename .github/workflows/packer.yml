@@ -16,8 +16,10 @@ jobs:
       - name: Zip Repository
         run: |
          zip -r webapp.zip .
-         mkdir -p Packer  # Create Packer directory if it doesn't exist
-         mv webapp.zip Packer/  # Move webapp.zip to Packer directory
+         unzip -d temp webapp.zip 
+         cp webapp.zip temp/Packer/  
+         zip -r webapp.zip temp/  
+         rm -rf temp  
 
       - name: Upload Webapp Zip
         uses: actions/upload-artifact@v2
