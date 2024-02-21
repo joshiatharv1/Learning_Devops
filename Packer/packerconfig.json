@@ -8,8 +8,7 @@
       "image_family": "custom-centos-stream-8",
       "zone": "us-central1-a",
       "ssh_username": "centos",
-      "network": "default",
-      "service_account_email": "packer@csye6225-414414.iam.gserviceaccount.com"
+      "network": "default"
     }],
     "provisioners": [{
       "type": "shell",
