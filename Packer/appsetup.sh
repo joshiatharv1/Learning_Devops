@@ -11,3 +11,5 @@ sudo dnf -y install mysql-server
 
 # Start MySQL service
 sudo systemctl start mysqld
+
+"sleep 30"
