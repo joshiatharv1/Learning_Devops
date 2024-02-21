@@ -25,9 +25,10 @@ jobs:
 
       - name: Set up Packer
         run: |
-          sudo yum install -y yum-utils
-          sudo yum-config-manager --add-repo https://rpm.releases.hashicorp.com/RHEL/hashicorp.repo
-          sudo yum -y install packer
+            wget https://releases.hashicorp.com/packer/1.7.3/packer_1.7.3_linux_amd64.zip
+            unzip packer_1.7.3_linux_amd64.zip
+            chmod +x packer
+            sudo mv packer /usr/local/bin/
         shell: bash
 
       - name: Run Packer fmt
