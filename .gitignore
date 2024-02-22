@@ -134,3 +134,5 @@ node_modules
 .env
 
 credentials.json
+
+webapp.zip

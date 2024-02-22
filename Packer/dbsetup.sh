@@ -1,13 +1,16 @@
 sleep 30
 
-sudo systemctl status mysqld
+sudo dnf -y install mysql-server
+
+
 
 sudo systemctl start mysqld
 
-mysql -u root
 
-ALTER USER 'root'@'localhost' IDENTIFIED BY 'root';
 
-CREATE DATABASE test;
+sleep 30
+sudo mysql -u root -e "CREATE DATABASE test;"
 
-exit
+sudo mysql -u root -e "ALTER USER 'root'@'localhost' IDENTIFIED BY 'root';"
+
+echo "DatabaseScript ran successfully."
