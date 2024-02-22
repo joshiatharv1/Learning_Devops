@@ -2,11 +2,7 @@ sleep 30
 
 sudo dnf -y install mysql-server
 
-
-
 sudo systemctl start mysqld
-
-
 
 sleep 30
 sudo mysql -u root -e "CREATE DATABASE test;"
