@@ -31,3 +31,7 @@ sudo systemctl daemon reload
 
 sudo systemctl enable myservice
 sudo systemctl start myservice
+
+sudo systemctl restart mysqld
+sudo systemctl stop myservice
+sudo systemctl start myservice
