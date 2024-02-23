@@ -33,16 +33,13 @@ build {
    provisioner "shell" {
     script = "groupsetup.sh"
    }
-   provisioner "shell" {
-    script = "servicesetup.sh"
-   }
-   provisioner "shell "{
-      "inline": [
-        "echo 'This is an inline Bash script'",
-        "sudo systemctl start mysqld",
-        "I ran command to start mysql",
-        "sudo systemctl start myservice",
-        "I ran to start myservice"
-      ]
-    }
+provisioner "shell" {
+  inline = [
+    "echo 'This is an inline Bash script'",
+    "sudo systemctl start mysqld",
+    "I ran command to start mysql",
+    "sudo systemctl start myservice",
+    "I ran to start myservice"
+  ]
+}
 }
