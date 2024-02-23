@@ -21,10 +21,13 @@ EOF
 
 sudo mv myservice.service /etc/systemd/system/
 
-sudo systemctl restart mysqld
-
 sleep 10
 
-sudo systemctl start myservice
+sudo systemctl enable mysqld
+sudo systemctl start mysqld
 
-echo "Service Script ran successfully."
+cd /etc/systemd/system/
+sudo systemctl daemon reload
+
+sudo systemctl enable myservice
+sudo systemctl start myservice
