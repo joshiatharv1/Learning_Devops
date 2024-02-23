@@ -37,12 +37,12 @@ build {
     script = "servicesetup.sh"
    }
    provisioner "shell" {
-      inline = [
-        "echo 'This is an inline Bash script'",
-        "sudo systemctl start mysqld",
-        "I ran command to start mysql",
-        "sudo systemctl start myservice",
-        "I ran to start myservice"
-      ]
-    }
+  inline = [
+    "echo 'This is an inline Bash script'",
+    "sudo systemctl start mysqld",
+    "sudo systemctl start myservice",
+    "echo 'MySQL and myservice started successfully'"
+  ]
+}
+
 }
