@@ -1,0 +1,63 @@
+name: Build Image
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Zip Repository
+        run: |
+         zip -r webapp.zip .
+
+      - name: Upload Webapp Zip
+        uses: actions/upload-artifact@v2
+        with:
+          name: webapp
+          path: webapp.zip
+
+      - name: Set up Google Cloud SDK
+        uses: google-github-actions/setup-gcloud@v0.4.0
+        with:
+          service_account_key: ${{ secrets.GCP_SA_KEY }}
+          project_id: ${{ secrets.Project_Id }}
+
+      - name: Set up Packer
+        run: |
+            wget https://releases.hashicorp.com/packer/1.7.3/packer_1.7.3_linux_amd64.zip
+            unzip packer_1.7.3_linux_amd64.zip
+            chmod +x packer
+            sudo mv packer /usr/local/bin/
+            cd Packer
+            echo '${{ secrets.GCP_SA_KEY }}' > credentials.json
+            cp ../webapp.zip .
+            ls -l  
+        shell: bash
+
+      - name: Run Packer Init Function
+        run: |
+          cd Packer
+          packer init packerconfig.json.pkr.hcl
+
+      - name: Run Packer fmt
+        run: |
+          cd Packer
+          packer fmt packerconfig.json.pkr.hcl
+
+      - name: Run Packer validate run given here
+        run: |
+          cd Packer
+          packer validate packerconfig.json.pkr.hcl
+
+      - name: Run Packer build
+        run: |
+          cd Packer
+          packer build packerconfig.json.pkr.hcl 
+
